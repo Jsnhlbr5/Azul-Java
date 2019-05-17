@@ -162,7 +162,7 @@ public class Game
                     if(s > score)
                         winner = pb.player;
                 }
-                JOptionPane.showMessageDialog(cav.frame, "Player " + winner + " wins!", "Game Over", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Player " + winner + " wins!", "Game Over", JOptionPane.INFORMATION_MESSAGE);
                 System.exit(0);
             }
         }

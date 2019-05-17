@@ -19,7 +19,7 @@ public class CommonAreaView extends JPanel
     private SpringLayout layout;
     private CenterAreaView center;
     private FactoryView[] factories;
-    public final JFrame frame;
+    private final JFrame frame;
     
     private static final int DEFAULT_SIZE = 1040;
     private static final float FACTORY_SIZE = 240/1040f;

@@ -145,7 +145,10 @@ public class Game
             {
                 discard = playerBoards[i].finishRound();
                 if(discard.contains(Color.WHITE))
+                {
                     curPlayer = i;
+                    discard.removeTilesOfColor(Color.WHITE);
+                }
                 boxLid.addAll(discard);
             }
             if(!gameOver())

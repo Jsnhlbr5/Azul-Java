@@ -8,23 +8,44 @@ import javax.swing.JComponent;
 import javax.swing.Spring;
 import javax.swing.SpringLayout;
 
+/**
+ * A collection of static constants and methods used by multiple interface
+ * classes
+ *
+ * @author jsnhlbr5
+ *
+ */
 public class ViewUtils
 {
-    //Common JLayeredPane layers
+    /**
+     * Used by JLayeredPanes as the layer to insert tile images on
+     */
     public static final Integer TILE_LAYER = new Integer(10);
+    /**
+     * Used by JLayeredPanes as the layer to insert score-related images on
+     */
     public static final Integer SCORE_LAYER = new Integer(20);
+    /**
+     * Used by JLayeredPanes as the layer to insert buttons on
+     */
     public static final Integer INTERFACE_LAYER = new Integer(30);
-    
-    //A cache of the images loaded via getImageIcon()
-    private static HashMap<String,ImageIcon> iconCache = new HashMap<String,ImageIcon>();
 
-    //Not instantiable
-    private ViewUtils(){}
-    
-    //Sets position and size of comp as percentages of parent
+    /**
+     * A cache of the images loaded via getImageIcon()
+     */
+    private static HashMap<String, ImageIcon> iconCache = new HashMap<String, ImageIcon>();
+
+    /**
+     * This class cannot be instantiated; all of its members are static
+     */
+    private ViewUtils()
+    {
+    }
+
+    // Sets position and size of comp as percentages of parent
     public static void setPercentage(Container parent, JComponent comp, float x, float y, float w, float h)
     {
-        if(!(parent.getLayout() instanceof SpringLayout))
+        if (!(parent.getLayout() instanceof SpringLayout))
             throw new IllegalArgumentException("The parent container must be using a SpringLayout.");
         SpringLayout layout = (SpringLayout) parent.getLayout();
         Spring width = layout.getConstraint(SpringLayout.WIDTH, parent);
@@ -36,13 +57,13 @@ public class ViewUtils
         c.setHeight(Spring.scale(height, h));
     }
 
-    //Centralized image loading code, with caching to reduce file access time.
+    // Centralized image loading code, with caching to reduce file access time.
     public static ImageIcon getImageIcon(String path)
     {
-        if(iconCache.containsKey(path))
+        if (iconCache.containsKey(path))
             return iconCache.get(path);
         java.net.URL uri = ViewUtils.class.getResource(path);
-        if(uri == null)
+        if (uri == null)
             throw new IllegalArgumentException("Invalid path " + path + ": file not found.");
         ImageIcon icon = new ImageIcon(uri);
         iconCache.put(path, icon);

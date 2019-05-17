@@ -6,8 +6,9 @@ import javax.swing.Action;
 import javax.swing.JButton;
 
 /**
- * Convenience class for creating transparent, text-free, un-focusable
- * JButton to overlay over images via JLayeredPane
+ * Convenience class for creating transparent, text-free, un-focusable JButton
+ * to overlay over images via JLayeredPane
+ *
  * @author jsnhlbr5
  *
  */

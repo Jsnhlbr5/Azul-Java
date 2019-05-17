@@ -47,10 +47,9 @@ public class CenterAreaView extends JLayeredPane
         this.add(interfaceLayer, ViewUtils.INTERFACE_LAYER);
     }
     
-    public void updateScale()
+    public void updateScale(float s)
     {
-        CommonAreaView parent = (CommonAreaView) this.getParent();
-        scale = parent.getHeight()/(float)CommonAreaView.DEFAULT_SIZE;
+        scale = s;
         calculatedTileSize = (int)Math.floor(DEFAULT_BASE_SIZE*scale);
         layerLayout.setHgap(calculatedTileSize/10);
         layerLayout.setVgap(calculatedTileSize/10);

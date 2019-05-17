@@ -51,9 +51,7 @@ public class PlayerBoardView extends JLayeredPane
         board.setBounds(0, 0, 750, 750);
         this.add(board, DEFAULT_LAYER);
         scoreMarker = new JLabel(ViewUtils.getImageIcon("/img/score.png"));
-        scoreMarker.setBounds(SCORE_X_POS, SCORE_Y_POS, 30, 30); // Score is
-                                                                 // known to be
-                                                                 // 0
+        scoreMarker.setBounds(SCORE_X_POS, SCORE_Y_POS, 30, 30); // Score is known to be 0
         this.add(scoreMarker, ViewUtils.SCORE_LAYER);
 
         // 5 build rows plus floor line

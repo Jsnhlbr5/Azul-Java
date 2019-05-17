@@ -15,8 +15,7 @@ import model.TileCollection;
 
 public class FactoryView extends JLayeredPane
 {
-    // Percentage-based size/position constants based on factory and tile image
-    // sizes, which reflect IRL relative sizes
+    // Percentage-based size/position constants based on factory and tile image sizes, which reflect IRL relative sizes
     // 60/240
     private static final float TILE_SIZE = 0.25f;
     // 57/240 (60-3 distance from edge if touching middle - half gap)

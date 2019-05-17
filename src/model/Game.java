@@ -118,7 +118,8 @@ public class Game
         if(!factories[factory].contains(c))
             throw new IllegalArgumentException("No " + c + " tiles in the chosen factory.");
         TileCollection picked = factories[factory].removeTilesOfColor(c);
-        centerArea.addAll(factories[factory].removeAll());
+        centerArea.addAll(factories[factory]);
+        factories[factory].clear();
         cav.getCenter().updateTiles();
         playerBoards[curPlayer].setSelectedTiles(picked);
     }
@@ -188,7 +189,8 @@ public class Game
             {
                 if(boxLid.size() > 0)
                 {
-                    bag = boxLid.removeAll();
+                    bag.addAll(boxLid);
+                    boxLid.clear();
                     bag.drawTiles(4 - factories[i].size());
                 }
                 else

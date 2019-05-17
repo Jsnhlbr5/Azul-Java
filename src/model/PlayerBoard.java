@@ -214,7 +214,9 @@ public class PlayerBoard
         score += floorLineScores[numTiles];
         if(score < 0)
             score = 0;
-        return floorLine.removeAll();
+        TileCollection discard = new TileCollection(floorLine);
+        floorLine.clear();
+        return discard;
     }
     
     private void rowBonus()

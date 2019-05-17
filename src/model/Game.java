@@ -163,7 +163,10 @@ public class Game
                 {
                     int s = pb.finishGame();
                     if(s > score)
+                    {
+                        score = s;
                         winner = pb.player;
+                    }
                 }
                 JOptionPane.showMessageDialog(null, "Player " + winner + " wins!", "Game Over", JOptionPane.INFORMATION_MESSAGE);
                 System.exit(0);

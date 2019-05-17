@@ -50,7 +50,7 @@ public class PlayerBoardView extends JLayeredPane
         JLabel board = new JLabel(ViewUtils.getImageIcon("/img/PlayerBoard.png"));
         board.setBounds(0, 0, 750, 750);
         this.add(board, DEFAULT_LAYER);
-        scoreMarker = new JLabel(ViewUtils.getImageIcon("/img/Score.png"));
+        scoreMarker = new JLabel(ViewUtils.getImageIcon("/img/score.png"));
         scoreMarker.setBounds(SCORE_X_POS, SCORE_Y_POS, 30, 30); //Score is known to be 0
         this.add(scoreMarker, ViewUtils.SCORE_LAYER);
         

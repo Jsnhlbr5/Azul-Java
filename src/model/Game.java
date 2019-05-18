@@ -5,6 +5,11 @@ import javax.swing.UIManager;
 
 import view.CommonAreaView;
 
+/**
+ * The main logic class; this is the entry point for creating a single game
+ *
+ * @author jsnhlbr5
+ */
 public class Game
 {
     private int numPlayers;
@@ -17,8 +22,18 @@ public class Game
 
     private int curPlayer;
 
+    /**
+     * The number of factories to use for a given number of players; 0 and 1 are not valid numbers of players
+     */
     private static final int[] factoryCount = { -1, -1, 5, 7, 9 };
 
+    /**
+     * Runs a single game and exits. The number of players can be set using the first command line argument, the default
+     * is 2.
+     *
+     * @param args
+     *            the command line arguments
+     */
     public static void main(String[] args)
     {
         int players = 2;
@@ -47,6 +62,12 @@ public class Game
         theGame.setVisible(true);
     }
 
+    /**
+     * Sets the visibility of all the generated windows
+     *
+     * @param b
+     *            true to set them visible
+     */
     public void setVisible(boolean b)
     {
         cav.setVisible(b);
@@ -92,26 +113,57 @@ public class Game
         resetCenter();
     }
 
+    /**
+     * Returns the number of factories for this game
+     *
+     * @return the number of factories for this game
+     */
     public int getFactoryCount()
     {
         return factories.length;
     }
 
+    /**
+     * Returns a TileCollection representing the specified factory's tiles
+     *
+     * @param i
+     *            the factory for which tiles are being requested
+     * @return a TileCollection representing the specified factory's tiles
+     */
     public TileCollection getFactoryTiles(int i)
     {
         return new TileCollection(factories[i]);
     }
 
+    /**
+     * Returns a TileCollection representing the tiles in the center area
+     *
+     * @return a TileCollection representing the tiles in the center area
+     */
     public TileCollection getCenterTiles()
     {
         return new TileCollection(centerArea);
     }
 
+    /**
+     * Returns the player whose turn it is
+     *
+     * @return the player whose turn it is
+     */
     public int getCurPlayer()
     {
         return curPlayer;
     }
 
+    /**
+     * Selects tiles from the given factory of the given color. The selected tiles are transfered to the current
+     * player's selected tiles buffer, and the remainder are transfered to the center area.
+     *
+     * @param factory
+     *            the factory to select tiles from
+     * @param c
+     *            the color of tiles to select
+     */
     public void pickTilesFromFactory(int factory, Color c)
     {
         if (c == Color.WHITE)
@@ -125,6 +177,13 @@ public class Game
         playerBoards[curPlayer].setSelectedTiles(picked);
     }
 
+    /**
+     * Selects tiles from the center area of the given color. If the white tile is present, it is added to the selected
+     * tiles before they are transfered to the current player's selected tiles buffer.
+     *
+     * @param c
+     *            the color of tiles to select
+     */
     public void pickTilesFromCenter(Color c)
     {
         if (c == Color.WHITE)
@@ -137,6 +196,11 @@ public class Game
         playerBoards[curPlayer].setSelectedTiles(picked);
     }
 
+    /**
+     * Ends a player's turn. If the round is over (all tiles have been picked), performs end-of-round activities
+     * (tiling, scoring, and discard). If the game is not over, resets the common area for the next round; otherwise
+     * tallies final bonuses and declares the winner before exiting.
+     */
     public void endTurn()
     {
         playerBoards[curPlayer].pbv.updateTitle(false);
@@ -182,6 +246,9 @@ public class Game
         playerBoards[curPlayer].pbv.updateTitle(true);
     }
 
+    /**
+     * Sets up the common area for the beginning of a round.
+     */
     private void resetCenter()
     {
         for (int i = 0; i < factories.length; ++i)
@@ -207,7 +274,11 @@ public class Game
         cav.getCenter().updateTiles();
     }
 
-    // Returns true if all tiles have been drawn.
+    /**
+     * Returns true if the round is over (all tiles have been drawn)
+     *
+     * @return true if the round is over (all tiles have been drawn)
+     */
     private boolean roundOver()
     {
         if (!centerArea.isEmpty())
@@ -220,6 +291,11 @@ public class Game
         return true;
     }
 
+    /**
+     * Returns true if the game is over (at least one player has at least one completed row)
+     *
+     * @return true if the game is over (at least one player has at least one completed row)
+     */
     private boolean gameOver()
     {
         for (int i = 0; i < numPlayers; ++i)

@@ -6,7 +6,6 @@ import java.util.ArrayList;
  * Specialization of ArrayList to simulate a collection of tiles
  *
  * @author jsnhlbr5
- *
  */
 public class TileCollection extends ArrayList<Color>
 {

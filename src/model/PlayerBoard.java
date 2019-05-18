@@ -4,7 +4,11 @@ import java.util.Arrays;
 
 import view.PlayerBoardView;
 
-//Represents a single player's board
+/**
+ * A representation of a single player's board
+ *
+ * @author jsnhlbr5
+ */
 public class PlayerBoard
 {
     private boolean[][] wall;
@@ -15,13 +19,24 @@ public class PlayerBoard
     private TileCollection selectedTiles;
     private Game game;
     public final PlayerBoardView pbv;
-    // This is adjusted up 1 from the zero-indexed input
+    /**
+     * The numeric position from an arbitrary first position (adjusted up 1 from the zero-indexed input)
+     */
     public final int player;
 
-    // The total penalty for having the given quantity of tiles on your floor
-    // line.
+    /**
+     * The total penalty for having the given quantity of tiles on your floor line (0 tiles = 0 penalty).
+     */
     private static final int[] floorLineScores = { 0, -1, -2, -4, -6, -8, -11, -14 };
 
+    /**
+     * Constructs a new player board logical representation connected to the given Game, using the given player index
+     *
+     * @param g
+     *            the Game this board belongs to
+     * @param p
+     *            the 0-indexed player number given by the Game
+     */
     public PlayerBoard(Game g, int p)
     {
         game = g;
@@ -40,6 +55,13 @@ public class PlayerBoard
 
     // ---- Get/check state methods ----
 
+    /**
+     * Returns a TileCollection representing the tiles currently on the given build row
+     *
+     * @param row
+     *            the build row
+     * @return a TileCollection representing the tiles currently on the given build row
+     */
     public TileCollection getBuildRowTiles(int row)
     {
         TileCollection tc = new TileCollection();
@@ -48,11 +70,21 @@ public class PlayerBoard
         return tc;
     }
 
+    /**
+     * Returns a TileCollection representing the tiles currently on the floor line
+     *
+     * @return a TileCollection representing the tiles currently on the floor line
+     */
     public TileCollection getFloorLineTiles()
     {
         return new TileCollection(floorLine);
     }
 
+    /**
+     * Returns a 2d boolean array representing which wall positions have been tiled
+     *
+     * @return a 2d boolean array representing which wall positions have been tiled
+     */
     public boolean[][] getWall()
     {
         boolean[][] w = new boolean[5][];
@@ -63,16 +95,33 @@ public class PlayerBoard
         return w;
     }
 
+    /**
+     * Returns this player's current score
+     *
+     * @return this player's current score
+     */
     public int getScore()
     {
         return score;
     }
 
+    /**
+     * Returns true if this player can add their currently selected tiles to the given build row
+     *
+     * @param row
+     *            the build row
+     * @return true if this player can add their currently selected tiles to the given build row
+     */
     public boolean canAddTilesToRow(int row)
     {
         return buildRows[row].canAddTiles(selectedTiles.getColorIgnoreWhite());
     }
 
+    /**
+     * Returns true if this player has at least one row of their wall completed
+     *
+     * @return true if this player has at least one row of their wall completed
+     */
     public boolean hasCompleteRow()
     {
         boolean complete;
@@ -94,6 +143,11 @@ public class PlayerBoard
         return false;
     }
 
+    /**
+     * Returns true if this player currently has selected tiles that they have not placed on their board
+     *
+     * @return true if this player currently has selected tiles that they have not placed on their board
+     */
     public boolean hasSelectedTiles()
     {
         return selectedTiles != null;
@@ -101,14 +155,24 @@ public class PlayerBoard
 
     // ---- Mutator methods ----
 
+    /**
+     * Sets this player's selected tiles buffer to the given TileCollection
+     *
+     * @param tc
+     *            the TileCollection representing the tiles this player selected
+     */
     public void setSelectedTiles(TileCollection tc)
     {
         selectedTiles = tc;
         pbv.updateButtons();
     }
 
-    // Add tiles (from the selectedTiles buffer) to a build row, overflowing to
-    // the floor line
+    /**
+     * Adds tiles (from the selectedTiles buffer) to the given build row, overflowing to the floor line
+     *
+     * @param row
+     *            the 0-indexed row number (>4 places tiles directly on the floor line)
+     */
     public void addTilesToRow(int row)
     {
         if (selectedTiles == null)
@@ -131,6 +195,12 @@ public class PlayerBoard
         game.endTurn();
     }
 
+    /**
+     * Invokes tileRow() for each build row and scoreFloor(), collecting the discard tiles into a single collection, and
+     * triggers UI updates
+     *
+     * @return a TileCollection representing all of the tiles discarded by this player
+     */
     public TileCollection finishRound()
     {
         TileCollection discard = new TileCollection();
@@ -144,6 +214,11 @@ public class PlayerBoard
         return discard;
     }
 
+    /**
+     * Calculates end-of-game bonuses and returns this player's final score
+     *
+     * @return this player's final score
+     */
     public int finishGame()
     {
         rowBonus();
@@ -155,7 +230,7 @@ public class PlayerBoard
 
     // ---- Private methods ----
 
-    // Tiles a build row onto the wall
+    // Tiles a build row onto the wall (if it's complete) and returns the discarded tiles form doing so
     private TileCollection tileRow(int row)
     {
         BuildRow br = buildRows[row];
@@ -168,6 +243,7 @@ public class PlayerBoard
         return new TileCollection();
     }
 
+    // Calculates the score for a single tile, by counting the contiguous row and/or column that it is part of
     private void scoreTile(int row, int col)
     {
         boolean inARow = ((col + 1 < 5) ? wall[row][col + 1] : false) || ((col - 1 > -1) ? wall[row][col - 1] : false);
@@ -203,6 +279,7 @@ public class PlayerBoard
         }
     }
 
+    // Calculates the score penalty based on the floor line and returns all of the tiles that were placed there
     private TileCollection scoreFloor()
     {
         int numTiles = floorLine.size();
@@ -216,6 +293,7 @@ public class PlayerBoard
         return discard;
     }
 
+    // Adds 2 to this player's score for every complete row
     private void rowBonus()
     {
         boolean complete;
@@ -236,6 +314,7 @@ public class PlayerBoard
         }
     }
 
+    // Adds 7 to this player's score for every complete column
     private void colBonus()
     {
         boolean complete;
@@ -256,6 +335,7 @@ public class PlayerBoard
         }
     }
 
+    // Adds 10 to this player's score for every complete color (all 5 tiles of one color)
     private void colorBonus()
     {
         boolean complete;
@@ -276,6 +356,11 @@ public class PlayerBoard
         }
     }
 
+    /**
+     * A representation of a single build row (to centralize some of the related logic)
+     *
+     * @author jsnhlbr5
+     */
     private class BuildRow
     {
         // The row this BuildRow represents (0-indexed)
@@ -293,14 +378,17 @@ public class PlayerBoard
 
         public boolean isFull()
         {
+            // The row number is 0-indexed, so +1
             return count == row + 1;
         }
 
         public boolean canAddTiles(Color color)
         {
+            // Not already tiled in this row, matching existing tiles (if any), and there is space left
             return !(wall[row][column(color)]) && (this.color == null || this.color == color) && !this.isFull();
         }
 
+        // Adds the given tiles to this row, returning any overflow
         public TileCollection addTiles(TileCollection tc)
         {
             if (!tc.isAllOneColor())
@@ -317,20 +405,24 @@ public class PlayerBoard
             return tc.drawTiles(overflow);
         }
 
+        // Gets the discard tiles from tiling this row
         public TileCollection getDiscard()
         {
             TileCollection discard = new TileCollection();
+            // Equal to the row number because one is kept for the wall
             discard.addTiles(color, row);
             this.count = 0;
             this.color = null;
             return discard;
         }
 
+        // Returns the column this row will tile to, based on its current color
         public int column()
         {
             return (row + color.ordinal()) % 5;
         }
 
+        // Returns the column for this row and the given color
         public int column(Color color)
         {
             return (row + color.ordinal()) % 5;

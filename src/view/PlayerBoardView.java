@@ -1,6 +1,7 @@
 package view;
 
 import java.awt.Component;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
@@ -73,6 +74,7 @@ public class PlayerBoardView extends JLayeredPane
         frame.add(this);
         frame.pack();
         frame.setResizable(false);
+        frame.setIconImage(Toolkit.getDefaultToolkit().getImage(ViewUtils.class.getResource("/img/TEAL.png")));
     }
 
     @Override

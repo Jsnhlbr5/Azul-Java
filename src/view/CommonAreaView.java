@@ -1,5 +1,6 @@
 package view;
 
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
@@ -98,6 +99,7 @@ public class CommonAreaView extends JPanel
         frame.setJMenuBar(mb);
         frame.pack();
         frame.setResizable(false);
+        frame.setIconImage(Toolkit.getDefaultToolkit().getImage(ViewUtils.class.getResource("/img/TEAL.png")));
     }
 
     @Override

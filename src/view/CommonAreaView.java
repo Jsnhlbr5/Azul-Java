@@ -25,7 +25,7 @@ public class CommonAreaView extends JPanel
     private static final int DEFAULT_SIZE = 1040;
     private static final float FACTORY_SIZE = 240 / 1040f;
     // pre-calculated positions for factories (as percent of parent)
-    //@formatter:off
+    //@formatter:off (these look better manually formatted)
     private static final float[] fx5 = { 400/1040f, 780/1040f, 635/1040f, 165/1040f,  20/1040f };
     private static final float[] fy5 = {   0/1040f, 276/1040f, 724/1040f, 724/1040f, 276/1040f };
     private static final float[] fx7 = { 400/1040f, 713/1040f, 790/1040f, 574/1040f, 226/1040f,  10/1040f,  87/1040f };

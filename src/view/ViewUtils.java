@@ -9,8 +9,7 @@ import javax.swing.Spring;
 import javax.swing.SpringLayout;
 
 /**
- * A collection of static constants and methods used by multiple interface
- * classes
+ * A collection of static constants and methods used by multiple interface classes
  *
  * @author jsnhlbr5
  *
@@ -42,7 +41,22 @@ public class ViewUtils
     {
     }
 
-    // Sets position and size of comp as percentages of parent
+    /**
+     * Sets position and size of a component as percentages of its parent
+     *
+     * @param parent
+     *            the parent Container
+     * @param comp
+     *            the JComponent to be positioned/sized
+     * @param x
+     *            the horizontal position
+     * @param y
+     *            the vertical position
+     * @param w
+     *            the horizontal size
+     * @param h
+     *            the vertical size
+     */
     public static void setPercentage(Container parent, JComponent comp, float x, float y, float w, float h)
     {
         if (!(parent.getLayout() instanceof SpringLayout))
@@ -57,7 +71,13 @@ public class ViewUtils
         c.setHeight(Spring.scale(height, h));
     }
 
-    // Centralized image loading code, with caching to reduce file access time.
+    /**
+     * Centralized image loading code, with caching to reduce file access time.
+     *
+     * @param path
+     *            the resource path
+     * @return an ImageIcon constructed from the resource at the specified path
+     */
     public static ImageIcon getImageIcon(String path)
     {
         if (iconCache.containsKey(path))

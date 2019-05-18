@@ -10,7 +10,6 @@ import javax.swing.JButton;
  * to overlay over images via JLayeredPane
  *
  * @author jsnhlbr5
- *
  */
 public class InvisibleButton extends JButton
 {

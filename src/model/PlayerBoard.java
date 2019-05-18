@@ -230,7 +230,7 @@ public class PlayerBoard
 
     // ---- Private methods ----
 
-    // Tiles a build row onto the wall (if it's complete) and returns the discarded tiles form doing so
+    // Tiles a build row onto the wall (if it's complete) and returns the discarded tiles from doing so
     private TileCollection tileRow(int row)
     {
         BuildRow br = buildRows[row];

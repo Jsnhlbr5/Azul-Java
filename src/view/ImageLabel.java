@@ -10,7 +10,6 @@ import javax.swing.JLabel;
  * Creates a scalable image label
  *
  * @author jsnhlbr5
- *
  */
 public class ImageLabel extends JLabel
 {

@@ -260,7 +260,7 @@ public class Game
                 {
                     bag.addAll(boxLid);
                     boxLid.clear();
-                    bag.drawTiles(4 - factories[i].size());
+                    factories[i].addAll(bag.drawTiles(4 - factories[i].size()));
                 }
                 else
                 {

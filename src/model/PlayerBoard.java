@@ -20,9 +20,9 @@ public class PlayerBoard
     private Game game;
     public final PlayerBoardView pbv;
     /**
-     * The numeric position from an arbitrary first position (adjusted up 1 from the zero-indexed input)
+     * The name for this player
      */
-    public final int player;
+    public final String player;
 
     /**
      * The total penalty for having the given quantity of tiles on your floor line (0 tiles = 0 penalty).
@@ -37,10 +37,10 @@ public class PlayerBoard
      * @param p
      *            the 0-indexed player number given by the Game
      */
-    public PlayerBoard(Game g, int p)
+    public PlayerBoard(Game g, String p)
     {
         game = g;
-        player = ++p;
+        player = p;
         wall = new boolean[5][5];
         score = 0;
         buildRows = new BuildRow[5];

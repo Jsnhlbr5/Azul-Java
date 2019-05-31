@@ -172,9 +172,9 @@ public class PlayerBoardView extends JLayeredPane
     public void updateTitle(boolean currentPlayer)
     {
         if (currentPlayer)
-            frame.setTitle("Player " + model.player + " (Your turn)");
+            frame.setTitle(model.player + " (Your turn)");
         else
-            frame.setTitle("Player " + model.player);
+            frame.setTitle(model.player);
     }
 
     private String getColorForWallPos(int row, int col)

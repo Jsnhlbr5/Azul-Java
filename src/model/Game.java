@@ -1,5 +1,8 @@
 package model;
 
+import java.awt.Window;
+
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 
@@ -236,7 +239,7 @@ public class Game
                 }
                 JOptionPane.showMessageDialog(null, "Player " + winner + " wins!", "Game Over",
                         JOptionPane.INFORMATION_MESSAGE);
-                System.exit(0);
+                dispose();
             }
         }
         else
@@ -304,5 +307,18 @@ public class Game
                 return true;
         }
         return false;
+    }
+    
+    /**
+     * Disposes of all player windows and the common area window (resulting in the application exiting if run from the
+     * above main method)
+     */
+    public void dispose()
+    {
+        for (PlayerBoard pb : playerBoards)
+        {
+            ((JFrame) pb.pbv.getTopLevelAncestor()).dispose();
+        }
+        ((JFrame) cav.getTopLevelAncestor()).dispose();
     }
 }

@@ -25,14 +25,14 @@ public class CommonAreaView extends JPanel
     private static final int DEFAULT_SIZE = 1040;
     private static final float FACTORY_SIZE = 240 / 1040f;
     // pre-calculated positions for factories (as percent of parent)
-    //@formatter:off (these look better manually formatted)
+    // @formatter:off (these look better manually formatted)
     private static final float[] fx5 = { 400/1040f, 780/1040f, 635/1040f, 165/1040f,  20/1040f };
     private static final float[] fy5 = {   0/1040f, 276/1040f, 724/1040f, 724/1040f, 276/1040f };
     private static final float[] fx7 = { 400/1040f, 713/1040f, 790/1040f, 574/1040f, 226/1040f,  10/1040f,  87/1040f };
     private static final float[] fy7 = {   0/1040f, 151/1040f, 489/1040f, 760/1040f, 760/1040f, 489/1040f, 151/1040f };
     private static final float[] fx9 = { 400/1040f, 657/1040f, 794/1040f, 746/1040f, 537/1040f, 263/1040f,  54/1040f,   6/1040f, 143/1040f };
     private static final float[] fy9 = {   0/1040f,  94/1040f, 331/1040f, 600/1040f, 776/1040f, 776/1040f, 600/1040f, 331/1040f,  94/1040f };
-    //@formatter:on
+    // @formatter:on
 
     // Create the view at the default size
     public CommonAreaView(Game m)
@@ -131,7 +131,7 @@ public class CommonAreaView extends JPanel
             int really = JOptionPane.showConfirmDialog(frame, "Are you sure you want to exit?", "Exit Game",
                     JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
             if (really == JOptionPane.YES_OPTION)
-                System.exit(0);
+                model.dispose();
         }
 
     }

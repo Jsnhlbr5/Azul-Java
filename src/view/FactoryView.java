@@ -62,10 +62,9 @@ public class FactoryView extends JLayeredPane
         }
 
         TileCollection tc = model.getFactoryTiles(index);
-        disableButtons();
-        if (tc.isEmpty())
+        for (int i = 0; i < 4; ++i)
         {
-            return;
+            buttons[i].setEnabled(false);
         }
         for (int i = 0; i < tc.size(); ++i)
         {
@@ -76,14 +75,6 @@ public class FactoryView extends JLayeredPane
             this.add(tilePanel, ViewUtils.TILE_LAYER);
             ((PickTilesAction) buttons[i].getAction()).setColor(tc.get(i));
             buttons[i].setEnabled(true);
-        }
-    }
-
-    private void disableButtons()
-    {
-        for (int i = 0; i < 4; ++i)
-        {
-            buttons[i].setEnabled(false);
         }
     }
 

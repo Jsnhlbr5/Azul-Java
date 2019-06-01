@@ -2,6 +2,7 @@ package model;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
 import view.CommonAreaView;
@@ -20,16 +21,16 @@ public class Game
     private TileCollection centerArea;
     private TileCollection boxLid;
     private CommonAreaView cav;
-    
+
     private int curPlayer;
-    
+
     /**
      * The number of factories to use for a given number of players; 0 and 1 are not valid numbers of players
      */
     private static final int[] factoryCount = { -1, -1, 5, 7, 9 };
-    
-    private static final String[] defaultNames = { "Player 1", "Player 2", "Player 3", "Player 4"};
-    
+
+    private static final String[] defaultNames = { "Player 1", "Player 2", "Player 3", "Player 4" };
+
     /**
      * Runs a single game and exits. The number of players can be set using the first command line argument, the default
      * is 2.
@@ -50,9 +51,12 @@ public class Game
             {
                 JOptionPane.showMessageDialog(null, "First argument must be the number of players (2-4)", "Error",
                         JOptionPane.ERROR_MESSAGE);
+                System.exit(0);
             }
         }
-        
+
+        final int passablePlayers = players;
+
         try
         {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -60,11 +64,17 @@ public class Game
         catch (Exception e)
         {// Do nothing (Can't use system look, default Java look will be used)
         }
-        
-        Game theGame = new Game(players);
-        theGame.setVisible(true);
+
+        SwingUtilities.invokeLater(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                new Game(passablePlayers).setVisible(true);
+            }
+        });
     }
-    
+
     /**
      * Sets the visibility of all the generated windows
      *
@@ -79,12 +89,12 @@ public class Game
             pb.pbv.setVisible(b);
         }
     }
-    
+
     public Game(int players)
     {
         this(players, defaultNames);
     }
-    
+
     public Game(int players, String[] names)
     {
         if (players < 2 || players > 4)
@@ -95,32 +105,32 @@ public class Game
         {
             playerBoards[i] = new PlayerBoard(this, names[i]);
         }
-        
+
         bag = new TileCollection();
         bag.addTiles(Color.BLUE, 20);
         bag.addTiles(Color.YELLOW, 20);
         bag.addTiles(Color.RED, 20);
         bag.addTiles(Color.BLACK, 20);
         bag.addTiles(Color.TEAL, 20);
-        
+
         factories = new TileCollection[factoryCount[numPlayers]];
         for (int i = 0; i < factories.length; ++i)
         {
             factories[i] = new TileCollection();
         }
-        
+
         centerArea = new TileCollection();
-        
+
         boxLid = new TileCollection();
-        
+
         // Randomize first player
         curPlayer = (int) (Math.random() * numPlayers);
         playerBoards[curPlayer].pbv.updateTitle(true);
-        
+
         cav = new CommonAreaView(this, 780);// TODO take this as an argument?
         resetCenter();
     }
-    
+
     /**
      * Returns the number of factories for this game
      *
@@ -130,7 +140,7 @@ public class Game
     {
         return factories.length;
     }
-    
+
     /**
      * Returns a TileCollection representing the specified factory's tiles
      *
@@ -142,7 +152,7 @@ public class Game
     {
         return new TileCollection(factories[i]);
     }
-    
+
     /**
      * Returns a TileCollection representing the tiles in the center area
      *
@@ -152,7 +162,7 @@ public class Game
     {
         return new TileCollection(centerArea);
     }
-    
+
     /**
      * Returns the player whose turn it is
      *
@@ -162,7 +172,7 @@ public class Game
     {
         return curPlayer;
     }
-    
+
     /**
      * Selects tiles from the given factory of the given color. The selected tiles are transfered to the current
      * player's selected tiles buffer, and the remainder are transfered to the center area.
@@ -184,7 +194,7 @@ public class Game
         cav.getCenter().updateTiles();
         playerBoards[curPlayer].setSelectedTiles(picked);
     }
-    
+
     /**
      * Selects tiles from the center area of the given color. If the white tile is present, it is added to the selected
      * tiles before they are transfered to the current player's selected tiles buffer.
@@ -203,7 +213,7 @@ public class Game
             picked.addAll(centerArea.removeTilesOfColor(Color.WHITE));
         playerBoards[curPlayer].setSelectedTiles(picked);
     }
-    
+
     /**
      * Ends a player's turn. If the round is over (all tiles have been picked), performs end-of-round activities
      * (tiling, scoring, and discard). If the game is not over, resets the common area for the next round; otherwise
@@ -252,7 +262,7 @@ public class Game
         }
         playerBoards[curPlayer].pbv.updateTitle(true);
     }
-    
+
     /**
      * Sets up the common area for the beginning of a round.
      */
@@ -263,7 +273,7 @@ public class Game
             factories[i] = bag.drawTiles(4);
             if (factories[i].size() < 4)
             {
-                if (boxLid.size() > 0)
+                if (!boxLid.isEmpty())
                 {
                     bag.addAll(boxLid);
                     boxLid.clear();
@@ -280,7 +290,7 @@ public class Game
         centerArea.add(Color.WHITE);
         cav.getCenter().updateTiles();
     }
-    
+
     /**
      * Returns true if the round is over (all tiles have been drawn)
      *
@@ -297,7 +307,7 @@ public class Game
         }
         return true;
     }
-    
+
     /**
      * Returns true if the game is over (at least one player has at least one completed row)
      *
@@ -312,7 +322,7 @@ public class Game
         }
         return false;
     }
-    
+
     /**
      * Disposes of all player windows and the common area window (resulting in the application exiting if run from the
      * above main method)

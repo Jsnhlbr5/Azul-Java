@@ -419,11 +419,13 @@ public class PlayerBoard
         // Returns the column this row will tile to, based on its current color
         public int column()
         {
-            return (row + color.ordinal()) % 5;
+            if (color == null)
+                return -1;
+            return column(color);
         }
 
         // Returns the column for this row and the given color
-        public int column(Color color)
+        private int column(Color color)
         {
             return (row + color.ordinal()) % 5;
         }

@@ -1,6 +1,7 @@
 package view;
 
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 
@@ -46,8 +47,7 @@ public class PlayerBoardView extends JLayeredPane
     {
         model = m;
 
-        this.setSize(750, 750);
-        this.setPreferredSize(getSize());
+        this.setPreferredSize(new Dimension(750,750));
         JLabel board = new JLabel(ViewUtils.getImageIcon("/img/PlayerBoard.png"));
         board.setBounds(0, 0, 750, 750);
         this.add(board, DEFAULT_LAYER);
@@ -69,7 +69,7 @@ public class PlayerBoardView extends JLayeredPane
         this.add(buildRowButtons[5], ViewUtils.INTERFACE_LAYER);
         updateButtons();
 
-        frame = new JFrame("Player " + model.player);
+        frame = new JFrame(model.player);
         frame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         frame.add(this);
         frame.pack();
@@ -80,6 +80,9 @@ public class PlayerBoardView extends JLayeredPane
     @Override
     public void setVisible(boolean b)
     {
+        // IDK why, but without this, sometimes there's a 10-pixel gap on the right and bottom
+        this.setSize(750, 750);
+        frame.pack();
         frame.setVisible(b);
     }
 
@@ -179,6 +182,7 @@ public class PlayerBoardView extends JLayeredPane
 
     private String getColorForWallPos(int row, int col)
     {
+        // plus 5 because we want it to always be positive
         switch ((col - row + 5) % 5)
         {
             case 0:

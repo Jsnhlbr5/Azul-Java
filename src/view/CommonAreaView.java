@@ -1,11 +1,15 @@
 package view;
 
+import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.AbstractAction;
 import javax.swing.JOptionPane;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
@@ -48,8 +52,7 @@ public class CommonAreaView extends JPanel
         layout = new SpringLayout();
         this.setLayout(layout);
 
-        this.setSize(size, size);
-        this.setPreferredSize(getSize());
+        this.setPreferredSize(new Dimension(size, size));
 
         center = new CenterAreaView(model);
         layout.putConstraint(SpringLayout.HORIZONTAL_CENTER, center, 0, SpringLayout.HORIZONTAL_CENTER, this);
@@ -57,6 +60,15 @@ public class CommonAreaView extends JPanel
         this.add(center);
         // Propagate any scaling from default to the center area view.
         center.updateScale(size / (float) DEFAULT_SIZE);
+
+        JLabel resizeHandle = new ImageLabel(ViewUtils.getImageIcon("/img/resize_handle.png"));
+        layout.putConstraint(SpringLayout.EAST, resizeHandle, 0, SpringLayout.EAST, this);
+        layout.putConstraint(SpringLayout.SOUTH, resizeHandle, 0, SpringLayout.SOUTH, this);
+        resizeHandle.setPreferredSize(new Dimension(30, 30));
+        ResizeListener listener = new ResizeListener();
+        resizeHandle.addMouseListener(listener);
+        resizeHandle.addMouseMotionListener(listener);
+        this.add(resizeHandle);
 
         switch (model.getFactoryCount())
         {
@@ -134,5 +146,54 @@ public class CommonAreaView extends JPanel
                 model.dispose();
         }
 
+    }
+
+    private class ResizeListener extends MouseAdapter
+    {
+        int startX, startY;
+
+        public ResizeListener()
+        {
+            super();
+        }
+
+        @Override
+        public void mousePressed(MouseEvent e)
+        {
+            startX = e.getXOnScreen();
+            startY = e.getYOnScreen();
+        }
+
+        @Override
+        public void mouseDragged(MouseEvent e)
+        {
+            resizeFromEvent(e);
+            startX = e.getXOnScreen();
+            startY = e.getYOnScreen();
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent e)
+        {
+            resizeFromEvent(e);
+        }
+
+        private void resizeFromEvent(MouseEvent e)
+        {
+            int changeX = e.getXOnScreen() - startX;
+            int changeY = e.getYOnScreen() - startY;
+            int change = (changeX < 0 || changeY < 0) ? Math.min(changeX, changeY) : Math.max(changeX, changeY);
+            frame.setSize(frame.getWidth() + change, frame.getHeight() + change);
+
+            if (getWidth() != getHeight())
+            {
+                int size = Math.min(getWidth(), getHeight());
+                setPreferredSize(new Dimension(size, size));
+                frame.pack();
+            }
+
+            // Propagate any scaling from default to the center area view.
+            center.updateScale(getWidth() / (float) DEFAULT_SIZE);
+        }
     }
 }

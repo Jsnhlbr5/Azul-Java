@@ -16,6 +16,11 @@ import javax.swing.WindowConstants;
 import model.PlayerBoard;
 import model.TileCollection;
 
+/**
+ * Visual representation of an individual player's board
+ *
+ * @author jsnhlbr5
+ */
 public class PlayerBoardView extends JLayeredPane
 {
     private PlayerBoard model;
@@ -43,11 +48,17 @@ public class PlayerBoardView extends JLayeredPane
     private static final double SCORE_X_OFFSET = 34.35;
     private static final int[] SCORE_Y_OFFSETS = { 0, 40, 80, 120, 164, 208 };
 
+    /**
+     * Constructs a new visual representation of the given player board.
+     *
+     * @param m
+     *            the logical model to use
+     */
     public PlayerBoardView(PlayerBoard m)
     {
         model = m;
 
-        this.setPreferredSize(new Dimension(750,750));
+        this.setPreferredSize(new Dimension(750, 750));
         JLabel board = new JLabel(ViewUtils.getImageIcon("/img/PlayerBoard.png"));
         board.setBounds(0, 0, 750, 750);
         this.add(board, DEFAULT_LAYER);
@@ -77,6 +88,11 @@ public class PlayerBoardView extends JLayeredPane
         frame.setIconImage(Toolkit.getDefaultToolkit().getImage(ViewUtils.class.getResource("/img/TEAL.png")));
     }
 
+    /**
+     * Overrides setVisible() to trigger on the parent frame instead.
+     *
+     * Also contains a "hack" to eliminate a visual bug.
+     */
     @Override
     public void setVisible(boolean b)
     {
@@ -86,14 +102,14 @@ public class PlayerBoardView extends JLayeredPane
         frame.setVisible(b);
     }
 
+    /**
+     * Updates build row, floor line, and wall tiles to match logical model.
+     */
     public void updateTiles()
     {
         // Remove old tiles
-        Component[] ca = this.getComponentsInLayer(ViewUtils.TILE_LAYER);
-        for (int i = 0; i < ca.length; ++i)
-        {
-            this.remove(ca[i]);
-        }
+        for (Component c : getComponentsInLayer(ViewUtils.TILE_LAYER))
+            this.remove(c);
 
         TileCollection tc;
         ImageIcon tileImage;
@@ -144,6 +160,9 @@ public class PlayerBoardView extends JLayeredPane
         this.repaint();
     }
 
+    /**
+     * Updates the score indicator to match the player's current score.
+     */
     public void updateScore()
     {
         int score = model.getScore();
@@ -153,6 +172,9 @@ public class PlayerBoardView extends JLayeredPane
         this.repaint();
     }
 
+    /**
+     * Updates build row and floor line buttons based on state.
+     */
     public void updateButtons()
     {
         if (!model.hasSelectedTiles())
@@ -172,6 +194,13 @@ public class PlayerBoardView extends JLayeredPane
         }
     }
 
+    /**
+     * Updates the window title to reflect whether it is this player's turn.
+     *
+     * @param currentPlayer
+     *            true to add text to indicate that it is this player's turn, false to return the window title to just
+     *            the player name
+     */
     public void updateTitle(boolean currentPlayer)
     {
         if (currentPlayer)
@@ -180,6 +209,15 @@ public class PlayerBoardView extends JLayeredPane
             frame.setTitle(model.player);
     }
 
+    /**
+     * Used to determine tile color for wall positions
+     *
+     * @param row
+     *            row number
+     * @param col
+     *            column number
+     * @return the color name
+     */
     private String getColorForWallPos(int row, int col)
     {
         // plus 5 because we want it to always be positive

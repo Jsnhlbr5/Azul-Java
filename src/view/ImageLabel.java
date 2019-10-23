@@ -21,6 +21,10 @@ public class ImageLabel extends JLabel
         myImage = image.getImage();
     }
 
+    /**
+     * Overrides the paint method to render the given image at the full size of the label, scaling the image as
+     * necessary
+     */
     @Override
     public void paint(Graphics g)
     {

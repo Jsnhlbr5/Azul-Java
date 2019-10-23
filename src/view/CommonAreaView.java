@@ -132,12 +132,18 @@ public class CommonAreaView extends JPanel
         frame.setIconImage(Toolkit.getDefaultToolkit().getImage(ViewUtils.class.getResource("/img/TEAL.png")));
     }
 
+    /**
+     * Overrides setVisible() to trigger on the parent frame instead.
+     */
     @Override
     public void setVisible(boolean b)
     {
         frame.setVisible(b);
     }
 
+    /**
+     * Propagates update commands to all child views.
+     */
     public void updateTiles()
     {
         for (FactoryView f : factories)
@@ -145,6 +151,12 @@ public class CommonAreaView extends JPanel
         center.updateTiles();
     }
 
+    /**
+     * Exits the game after a confirmation dialog. This is the only way to end a game early; all windows have their
+     * close operation set to DO_NOTHING_ON_CLOSE.
+     *
+     * @author jsnhlbr5
+     */
     private class QuitAction extends AbstractAction
     {
         public QuitAction()

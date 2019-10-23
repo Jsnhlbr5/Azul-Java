@@ -13,6 +13,11 @@ import model.Color;
 import model.Game;
 import model.TileCollection;
 
+/**
+ * Visual representation of a single factory (or "coaster")
+ *
+ * @author jsnhlbr5
+ */
 public class FactoryView extends JLayeredPane
 {
     // Percentage-based size/position constants based on factory and tile image sizes, which reflect IRL relative sizes
@@ -23,16 +28,23 @@ public class FactoryView extends JLayeredPane
     // 123/240 (120+3 half + half gap)
     private static final float SECOND_POSITION = 0.5125f;
 
-    private SpringLayout layout;
     private Game model;
     private int index;
     private JButton[] buttons;
 
+    /**
+     * Creates a new factory view tied to the given game representing the factory of the given index.
+     *
+     * @param g
+     *            the Game to use as a logical model
+     * @param index
+     *            the factory index in the Game's list of factories
+     */
     public FactoryView(Game g, int index)
     {
         model = g;
         this.index = index;
-        layout = new SpringLayout();
+        SpringLayout layout = new SpringLayout();
         this.setLayout(layout);
 
         ImageLabel background = new ImageLabel(ViewUtils.getImageIcon("/img/factory.png"));
@@ -43,6 +55,8 @@ public class FactoryView extends JLayeredPane
         for (int i = 0; i < 4; ++i)
         {
             buttons[i] = new InvisibleButton(new PickTilesAction(index, null));
+            // 0 1
+            // 2 3
             float x = (i % 2 == 0) ? FIRST_POSITION : SECOND_POSITION;
             float y = (i < 2) ? FIRST_POSITION : SECOND_POSITION;
             ViewUtils.setPercentage(this, buttons[i], x, y, TILE_SIZE, TILE_SIZE);
@@ -52,20 +66,19 @@ public class FactoryView extends JLayeredPane
         updateTiles();
     }
 
+    /**
+     * Removes old tiles (if any) and creates new ones; updates buttons to match.
+     */
     public void updateTiles()
     {
-        // Remove old tiles
-        Component[] ca = this.getComponentsInLayer(ViewUtils.TILE_LAYER);
-        for (int i = 0; i < ca.length; ++i)
-        {
-            this.remove(ca[i]);
-        }
-
-        TileCollection tc = model.getFactoryTiles(index);
+        // Remove old tiles and disable buttons
+        for (Component c : getComponentsInLayer(ViewUtils.TILE_LAYER))
+            this.remove(c);
         for (int i = 0; i < 4; ++i)
-        {
             buttons[i].setEnabled(false);
-        }
+
+        // Get new tiles and enable buttons (as appropriate)
+        TileCollection tc = model.getFactoryTiles(index);
         for (int i = 0; i < tc.size(); ++i)
         {
             JLabel tilePanel = new ImageLabel(ViewUtils.getImageIcon("/img/" + tc.get(i).name() + ".png"));

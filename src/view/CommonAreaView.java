@@ -1,6 +1,7 @@
 package view;
 
 import java.awt.Dimension;
+import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
@@ -18,6 +19,11 @@ import javax.swing.WindowConstants;
 
 import model.Game;
 
+/**
+ * Framework which holds and connects the visual representations of the factories and center pile
+ *
+ * @author jsnhlbr5
+ */
 public class CommonAreaView extends JPanel
 {
     private Game model;
@@ -38,13 +44,25 @@ public class CommonAreaView extends JPanel
     private static final float[] fy9 = {   0/1040f,  94/1040f, 331/1040f, 600/1040f, 776/1040f, 776/1040f, 600/1040f, 331/1040f,  94/1040f };
     // @formatter:on
 
-    // Create the view at the default size
+    /**
+     * Constructs a new common area visual representation connected to the given Game at the default size
+     *
+     * @param m
+     *            the Game to use as a logical model
+     */
     public CommonAreaView(Game m)
     {
         this(m, DEFAULT_SIZE);
     }
 
-    // Create the view with the specified size (in pixels)
+    /**
+     * Constructs a new common area visual representation connected to the given Game with the given size (in pixels)
+     *
+     * @param m
+     *            the Game to use as a logical model
+     * @param size
+     *            the initial size of the common area view (in pixels)
+     */
     public CommonAreaView(Game m, int size)
     {
         model = m;
@@ -120,14 +138,11 @@ public class CommonAreaView extends JPanel
         frame.setVisible(b);
     }
 
-    public FactoryView getFactory(int i)
+    public void updateTiles()
     {
-        return factories[i];
-    }
-
-    public CenterAreaView getCenter()
-    {
-        return center;
+        for (FactoryView f : factories)
+            f.updateTiles();
+        center.updateTiles();
     }
 
     private class QuitAction extends AbstractAction
@@ -148,9 +163,15 @@ public class CommonAreaView extends JPanel
 
     }
 
+    /**
+     * Custom resize handler to resize the common area view, but only to square sizes
+     *
+     * @author jsnhlbr5
+     */
     private class ResizeListener extends MouseAdapter
     {
-        int startX, startY;
+        int heightDiff;
+        Point winPos;
 
         public ResizeListener()
         {
@@ -160,16 +181,16 @@ public class CommonAreaView extends JPanel
         @Override
         public void mousePressed(MouseEvent e)
         {
-            startX = e.getXOnScreen();
-            startY = e.getYOnScreen();
+            // Frame is not square, record the difference
+            heightDiff = frame.getHeight() - frame.getWidth();
+            // Record window top-left corner (won't move during resize)
+            winPos = frame.getLocationOnScreen();
         }
 
         @Override
         public void mouseDragged(MouseEvent e)
         {
             resizeFromEvent(e);
-            startX = e.getXOnScreen();
-            startY = e.getYOnScreen();
         }
 
         @Override
@@ -180,17 +201,14 @@ public class CommonAreaView extends JPanel
 
         private void resizeFromEvent(MouseEvent e)
         {
-            int changeX = e.getXOnScreen() - startX;
-            int changeY = e.getYOnScreen() - startY;
-            int change = (changeX < 0 || changeY < 0) ? Math.min(changeX, changeY) : Math.max(changeX, changeY);
-            frame.setSize(frame.getWidth() + change, frame.getHeight() + change);
-
-            if (getWidth() != getHeight())
-            {
-                int size = Math.min(getWidth(), getHeight());
-                setPreferredSize(new Dimension(size, size));
-                frame.pack();
-            }
+            // Distance from top-left corner to mouse, plus 10px so the mouse is actually on the window
+            int sizeX = e.getXOnScreen() - winPos.x + 10;
+            // Subtract the X/Y dimension difference, since we set an internal square size
+            int sizeY = e.getYOnScreen() - winPos.y + 10 - heightDiff;
+            // Get the smaller size, but not less than 300px
+            int size = Math.max(Math.min(sizeX, sizeY), 300);
+            setPreferredSize(new Dimension(size, size));
+            frame.pack();
 
             // Propagate any scaling from default to the center area view.
             center.updateScale(getWidth() / (float) DEFAULT_SIZE);

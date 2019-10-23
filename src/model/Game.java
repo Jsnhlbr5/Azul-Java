@@ -90,17 +90,33 @@ public class Game
         }
     }
 
+    /**
+     * Creates a new game with the given number of players, using the default names
+     *
+     * @param players
+     *            the number of players (2-4)
+     */
     public Game(int players)
     {
         this(players, defaultNames);
     }
 
+    /**
+     * Creates a new game with the given number of players, using the given names
+     *
+     * @param players
+     *            the number of players (2-4)
+     * @param names
+     *            the names to use for each player
+     */
     public Game(int players, String[] names)
     {
         if (players < 2 || players > 4)
             throw new IllegalArgumentException("Invalid number of players, must be 2-4.");
         numPlayers = players;
         playerBoards = new PlayerBoard[numPlayers];
+        if (names.length < numPlayers)
+            throw new IllegalArgumentException("Not enough names given for the number of players");
         for (int i = 0; i < numPlayers; ++i)
         {
             playerBoards[i] = new PlayerBoard(this, names[i]);
@@ -191,7 +207,7 @@ public class Game
         TileCollection picked = factories[factory].removeTilesOfColor(c);
         centerArea.addAll(factories[factory]);
         factories[factory].clear();
-        cav.getCenter().updateTiles();
+        cav.updateTiles();
         playerBoards[curPlayer].setSelectedTiles(picked);
     }
 
@@ -285,10 +301,9 @@ public class Game
                     break;
                 }
             }
-            cav.getFactory(i).updateTiles();
         }
         centerArea.add(Color.WHITE);
-        cav.getCenter().updateTiles();
+        cav.updateTiles();
     }
 
     /**

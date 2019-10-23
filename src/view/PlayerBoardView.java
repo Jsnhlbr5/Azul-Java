@@ -175,7 +175,7 @@ public class PlayerBoardView extends JLayeredPane
     public void updateTitle(boolean currentPlayer)
     {
         if (currentPlayer)
-            frame.setTitle(model.player + " (Your turn)");
+            frame.setTitle(model.player + " (Active Player)");
         else
             frame.setTitle(model.player);
     }

@@ -35,7 +35,7 @@ public class PlayerBoard
      * @param g
      *            the Game this board belongs to
      * @param p
-     *            the 0-indexed player number given by the Game
+     *            the String name to use for this player
      */
     public PlayerBoard(Game g, String p)
     {
@@ -393,16 +393,13 @@ public class PlayerBoard
         {
             if (!tc.isAllOneColor())
                 throw new IllegalArgumentException("Invalid tile collection for build row: not all one color");
-            if (tc.getColor() != this.color && this.color != null)
+            if (tc.getColor() != this.color && this.color != null) // Shouldn't happen, check canAddTiles() first
                 return tc;
             this.color = tc.getColor();
             this.count += tc.size();
-            int overflow = this.count - (row + 1);
-            if (this.count > row + 1)
-                this.count = row + 1;
-            if (overflow < 0)
-                overflow = 0;
-            return tc.drawTiles(overflow);
+            int overflow = Math.max(this.count - (row + 1), 0); // Can't have negative overflow
+            this.count -= overflow; // 'overflow' extra tiles were added; remove them
+            return tc.drawTiles(overflow); // Simplest way to get the appropriate TileCollection
         }
 
         // Gets the discard tiles from tiling this row

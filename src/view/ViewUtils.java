@@ -20,7 +20,10 @@ public class ViewUtils
      * Used by JLayeredPanes as the layer to insert tile images on
      */
     public static final Integer TILE_LAYER = new Integer(10);
-
+    /**
+     * Used by JLayeredPanes as the layer to insert score-related images on
+     */
+    public static final Integer SCORE_LAYER = new Integer(20);
     /**
      * Used by JLayeredPanes as the layer to insert buttons on
      */

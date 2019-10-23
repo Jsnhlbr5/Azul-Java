@@ -18,8 +18,8 @@ public class TileCollection extends ArrayList<Color>
     }
 
     /**
-     * Constructs a list containing the elements of the specified collection, in
-     * the order they are returned by the collection'siterator.
+     * Constructs a list containing the elements of the specified collection, in the order they are returned by the
+     * collection's iterator.
      *
      * @param tc
      *            the collection whose elements are to be placed into this list
@@ -48,10 +48,9 @@ public class TileCollection extends ArrayList<Color>
     }
 
     /**
-     * Selects the specified number of tiles (Color objects) randomly from this
-     * collection. If the number of tiles to draw is larger than the size of
-     * this collection, then only as many tiles as are in this collection are
-     * drawn. The selected tiles are removed from this collection.
+     * Selects the specified number of tiles (Color objects) randomly from this collection. If the number of tiles to
+     * draw is larger than the size of this collection, then only as many tiles as are in this collection are drawn. The
+     * selected tiles are removed from this collection.
      *
      * @param num
      *            the number of tiles to draw
@@ -74,11 +73,9 @@ public class TileCollection extends ArrayList<Color>
     }
 
     /**
-     * Returns true if this collection contains Color objects that all have the
-     * same value.
+     * Returns true if this collection contains Color objects that all have the same value.
      *
-     * @return true if this collection contains Color objects that all have the
-     *         same value.
+     * @return true if this collection contains Color objects that all have the same value.
      */
     public boolean isAllOneColor()
     {
@@ -94,11 +91,9 @@ public class TileCollection extends ArrayList<Color>
     }
 
     /**
-     * Returns the color of tiles in this collection if it is all one color,
-     * null otherwise
+     * Returns the color of tiles in this collection if it is all one color, null otherwise
      *
-     * @return a <tt>Color</tt> object equal to those in this collection, or
-     *         <tt>null</tt> if not all one color
+     * @return a <tt>Color</tt> object equal to those in this collection, or <tt>null</tt> if not all one color
      */
     public Color getColor()
     {
@@ -108,11 +103,9 @@ public class TileCollection extends ArrayList<Color>
     }
 
     /**
-     * Returns the color of tiles in this collection if it is all one color,
-     * null otherwise; ignores WHITE tiles
+     * Returns the color of tiles in this collection if it is all one color, null otherwise; ignores WHITE tiles
      *
-     * @return a <tt>Color</tt> object equal to those in this collection, or
-     *         <tt>null</tt> if not all one color
+     * @return a <tt>Color</tt> object equal to those in this collection, or <tt>null</tt> if not all one color
      */
     public Color getColorIgnoreWhite()
     {
@@ -122,8 +115,7 @@ public class TileCollection extends ArrayList<Color>
     }
 
     /**
-     * Removes the tiles of the specified Color from this collection, and
-     * returns them in a new collection.
+     * Removes the tiles of the specified Color from this collection, and returns them in a new collection.
      *
      * @param c
      *            the Color of tiles to remove
@@ -135,7 +127,7 @@ public class TileCollection extends ArrayList<Color>
         for (int i = 0; i < this.size(); ++i)
         {
             if (this.get(i) == c)
-                tc.add(this.remove(i--));
+                tc.add(this.remove(i--)); // '--' here because we removed an element
         }
         return tc;
     }

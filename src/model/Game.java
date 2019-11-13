@@ -1,11 +1,14 @@
 package model;
 
+import java.util.ArrayList;
+
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
 import view.CommonAreaView;
+import view.GameObserver;
 
 /**
  * The main logic class; this is the entry point for creating a single game
@@ -22,7 +25,9 @@ public class Game
     private TileCollection boxLid;
     private CommonAreaView cav;
 
+    private ArrayList<GameObserver> observers;
     private int curPlayer;
+    private String winner;
 
     /**
      * The number of factories to use for a given number of players; 0 and 1 are not valid numbers of players
@@ -139,11 +144,19 @@ public class Game
 
         boxLid = new TileCollection();
 
+        winner = "none";
         // Randomize first player
         curPlayer = (int) (Math.random() * numPlayers);
         playerBoards[curPlayer].pbv.updateTitle(true);
 
-        cav = new CommonAreaView(this, 780);// TODO take this as an argument?
+        // TODO Something "smarter" for this size?
+        // - take as an argument
+        // - as % of GraphicsEnvironment (screen vertical resolution)
+        // - save as preference on close
+        cav = new CommonAreaView(this, 780);
+
+        observers = new ArrayList<GameObserver>();
+
         resetCenter();
     }
 
@@ -258,7 +271,7 @@ public class Game
             else
             {
                 int score = -1;
-                String winner = "";
+                winner = "";
                 for (PlayerBoard pb : playerBoards)
                 {
                     int s = pb.finishGame();
@@ -277,6 +290,11 @@ public class Game
             curPlayer = (curPlayer + 1) % numPlayers;
         }
         playerBoards[curPlayer].pbv.updateTitle(true);
+    }
+
+    public void addObserver(GameObserver o)
+    {
+        observers.add(o);
     }
 
     /**
@@ -349,5 +367,10 @@ public class Game
             ((JFrame) pb.pbv.getTopLevelAncestor()).dispose();
         }
         ((JFrame) cav.getTopLevelAncestor()).dispose();
+
+        for (GameObserver o : observers)
+        {
+            o.gameEnd(winner);
+        }
     }
 }

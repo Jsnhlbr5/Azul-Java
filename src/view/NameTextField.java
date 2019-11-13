@@ -12,16 +12,16 @@ public class NameTextField extends JTextField implements FocusListener
 {
     private final Highlighter defaultHighlighter;
     private final Font defaultFont, hintFont;
-    private final String hint;
+    private final String fallback;
     private boolean showingHint;
 
-    public NameTextField(final String hint)
+    public NameTextField(final String fallback)
     {
-        super(hint);
+        super(fallback);
         defaultHighlighter = this.getHighlighter();
         defaultFont = this.getFont();
         hintFont = defaultFont.deriveFont(Font.ITALIC);
-        this.hint = hint;
+        this.fallback = fallback;
         this.showingHint = true;
         changeFont();
         super.addFocusListener(this);
@@ -43,7 +43,7 @@ public class NameTextField extends JTextField implements FocusListener
     {
         if (this.getUserText().isEmpty())
         {
-            setText(hint);
+            setText(fallback);
             showingHint = true;
             changeFont();
         }

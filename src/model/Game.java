@@ -1,5 +1,6 @@
 package model;
 
+import java.awt.GraphicsEnvironment;
 import java.util.ArrayList;
 
 import javax.swing.JFrame;
@@ -149,11 +150,9 @@ public class Game
         curPlayer = (int) (Math.random() * numPlayers);
         playerBoards[curPlayer].pbv.updateTitle(true);
 
-        // TODO Something "smarter" for this size?
-        // - take as an argument
-        // - as % of GraphicsEnvironment (screen vertical resolution)
-        // - save as preference on close
-        cav = new CommonAreaView(this, 780);
+        // Create the center area at 3/4 the available height.
+        int size = (int)(GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds().height*.75);
+        cav = new CommonAreaView(this, size);
 
         observers = new ArrayList<GameObserver>();
 

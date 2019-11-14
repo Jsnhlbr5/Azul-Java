@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <project default="javadoc">
     <target name="javadoc">
-        <javadoc access="private" author="true" classpath="." destdir="E:\jsnhlbr5\Dropbox\Documents\Java\Azul\doc" doctitle="Azul Documentation" nodeprecated="false" nodeprecatedlist="false" noindex="false" nonavbar="false" notree="false" packagenames="view,model" source="1.8" sourcepath="E:\jsnhlbr5\Dropbox\Documents\Java\Azul\src" splitindex="false" use="true" version="true"/>
+        <javadoc access="private" author="true" classpath="." destdir="E:\jsnhlbr5\Dropbox\Documents\Java\Azul\docs" doctitle="Azul Documentation" nodeprecated="false" nodeprecatedlist="false" noindex="false" nonavbar="false" notree="false" packagenames="view,model" source="1.8" sourcepath="E:\jsnhlbr5\Dropbox\Documents\Java\Azul\src" splitindex="false" use="true" version="true"/>
     </target>
 </project>

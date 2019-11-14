@@ -21,8 +21,20 @@ import javax.swing.event.ChangeListener;
 
 import model.Game;
 
+/**
+ * A persistent controller to make it easier to launch sequential games. Also allows for customization of player names.
+ *
+ * @author jsnhlbr5
+ *
+ */
 public class Controller extends JFrame implements GameObserver
 {
+    /**
+     * Launches the Controller
+     *
+     * @param args
+     *            ignored
+     */
     public static void main(String[] args)
     {
         try
@@ -49,6 +61,9 @@ public class Controller extends JFrame implements GameObserver
 
     private static final String[] defaultNames = { "Player 1", "Player 2", "Player 3", "Player 4" };
 
+    /**
+     * Constructs the Controller UI
+     */
     public Controller()
     {
         super("Azul Controller");
@@ -75,21 +90,28 @@ public class Controller extends JFrame implements GameObserver
         playButton = new JButton(new PlayAction(this));
         this.add(playButton);
 
+        // Mainly for the width, so that the title is always visible.
         setMinimumSize(new Dimension(250, 100));
         pack();
         setResizable(false);
+        // Center on primary screen
+        setLocationRelativeTo(null);
     }
 
-    // Actions go here
-
+    /**
+     * Re-enables the Controller UI (disabled while a game is active). NYI: record win/loss for each player.
+     */
     @Override
     public void gameEnd(String winner)
     {
+        // TODO record winner
         enableUI();
         this.requestFocus();
-        // TODO record winner
     }
 
+    /**
+     * Disables the entire Controller UI (called when starting a game)
+     */
     private void disableUI()
     {
         numPlayers.setEnabled(false);
@@ -101,6 +123,10 @@ public class Controller extends JFrame implements GameObserver
         this.setEnabled(false);
     }
 
+    /**
+     * Enables the Controller UI, as appropriate; player name fields beyond the player count setting will remain
+     * disabled.
+     */
     private void enableUI()
     {
         this.setEnabled(true);
@@ -113,16 +139,31 @@ public class Controller extends JFrame implements GameObserver
         playButton.setEnabled(true);
     }
 
+    /**
+     * Action implementation to launch a new Game with the current settings
+     *
+     * @author jsnhlbr5
+     *
+     */
     private class PlayAction extends AbstractAction
     {
         private GameObserver observer;
 
+        /**
+         * Instantiates this action
+         *
+         * @param o
+         *            the Controller
+         */
         public PlayAction(GameObserver o)
         {
             super("Play");
             observer = o;
         }
 
+        /**
+         * Launch a new game with the current settings
+         */
         @Override
         public void actionPerformed(ActionEvent e)
         {
@@ -155,6 +196,9 @@ public class Controller extends JFrame implements GameObserver
             // Nothing to do here
         }
 
+        /**
+         * Disables/enables name fields to match the selected player count
+         */
         @Override
         public void stateChanged(ChangeEvent e)
         {
